@@ -6,6 +6,8 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // 站点部署在用户/组织主页根域名 https://yunyitongpin.github.io/，
+  // 因此 base 使用默认根路径 '/'（无需仓库名前缀）。
   plugins: [
     vue(),
     vueDevTools(),

@@ -21,7 +21,9 @@
         <button v-for="game in games" :key="game.id" class="game-card" @click="open(game)">
           <span class="emoji" :style="{ background: game.color }">{{ game.emoji }}</span>
           <h3>{{ game.title }}</h3>
-          <p>{{ game.description }}</p>
+          <p class="subtitle">{{ game.titleEn }}</p>
+          <p class="desc">{{ game.description }}</p>
+          <p class="desc-en">{{ game.descriptionEn }}</p>
           <div class="tags">
             <span v-for="tag in game.tags" :key="tag">{{ tag }}</span>
           </div>
@@ -34,6 +36,7 @@
           <button class="back" @click="close">← 返回游戏列表</button>
           <h2>
             <span>{{ activeGame.emoji }}</span> {{ activeGame.title }}
+            <small>{{ activeGame.titleEn }}</small>
           </h2>
         </div>
 
@@ -51,12 +54,46 @@ import { games } from '../data/games'
 import CharMatchGame from '../components/games/CharMatchGame.vue'
 import PinyinQuizGame from '../components/games/PinyinQuizGame.vue'
 import CharGuessGame from '../components/games/CharGuessGame.vue'
+import MeaningQuizGame from '../components/games/MeaningQuizGame.vue'
+import RadicalQuizGame from '../components/games/RadicalQuizGame.vue'
+import StrokeQuizGame from '../components/games/StrokeQuizGame.vue'
+import StructureQuizGame from '../components/games/StructureQuizGame.vue'
+import HskQuizGame from '../components/games/HskQuizGame.vue'
+import ReversePinyinGame from '../components/games/ReversePinyinGame.vue'
+import WordQuizGame from '../components/games/WordQuizGame.vue'
+import OriginQuizGame from '../components/games/OriginQuizGame.vue'
+import ComponentsQuizGame from '../components/games/ComponentsQuizGame.vue'
+import PinyinInputGame from '../components/games/PinyinInputGame.vue'
+import MemorySequenceGame from '../components/games/MemorySequenceGame.vue'
+import SpeedTapGame from '../components/games/SpeedTapGame.vue'
+import TimeAttackGame from '../components/games/TimeAttackGame.vue'
+import WordScrambleGame from '../components/games/WordScrambleGame.vue'
+import TrueFalseGame from '../components/games/TrueFalseGame.vue'
+import FlashcardGame from '../components/games/FlashcardGame.vue'
+import OddOneOutGame from '../components/games/OddOneOutGame.vue'
 
 // 注册表：游戏元信息的 component 字段映射到实际组件。
 const gameComponents = {
   CharMatchGame,
   PinyinQuizGame,
   CharGuessGame,
+  MeaningQuizGame,
+  RadicalQuizGame,
+  StrokeQuizGame,
+  StructureQuizGame,
+  HskQuizGame,
+  ReversePinyinGame,
+  WordQuizGame,
+  OriginQuizGame,
+  ComponentsQuizGame,
+  PinyinInputGame,
+  MemorySequenceGame,
+  SpeedTapGame,
+  TimeAttackGame,
+  WordScrambleGame,
+  TrueFalseGame,
+  FlashcardGame,
+  OddOneOutGame,
 }
 
 const activeGame = ref(null)
@@ -123,13 +160,25 @@ function close() {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .game-card {
   text-align: left;
-  padding: 24px;
+  padding: 22px 20px;
   border: 1px solid #e5e7eb;
   border-radius: 20px;
   background: white;
@@ -154,14 +203,30 @@ function close() {
 }
 
 .game-card h3 {
-  margin: 0 0 8px;
-  font-size: 19px;
+  margin: 0 0 2px;
+  font-size: 18px;
 }
 
-.game-card p {
-  margin: 0 0 14px;
-  color: #6b7280;
+.game-card .subtitle {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: #2f5d50;
+}
+
+.game-card .desc {
+  margin: 0 0 8px;
+  color: #4b5563;
   line-height: 1.6;
+  font-size: 14px;
+}
+
+.game-card .desc-en {
+  margin: 0 0 14px;
+  color: #9ca3af;
+  line-height: 1.55;
+  font-size: 12.5px;
 }
 
 .tags {
@@ -204,6 +269,14 @@ function close() {
 .play-bar h2 {
   margin: 0;
   font-size: 22px;
+}
+
+.play-bar h2 small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
 }
 
 .play-stage {

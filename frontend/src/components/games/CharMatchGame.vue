@@ -7,7 +7,7 @@
       </div>
       <div class="hud-item">
         <span>已配对</span>
-        <strong>{{ matched.length }} / {{ characters.length }}</strong>
+        <strong>{{ matched.length }} / {{ pool.length }}</strong>
       </div>
       <button class="reset" @click="start">重新开始</button>
     </div>
@@ -42,16 +42,19 @@ import { computed, ref } from 'vue'
 import { characters } from '../../data/characters'
 import { shuffle } from '../../utils/random'
 
+const MATCH_SIZE = 8 // 每局随机抽取的汉字数量，避免题库变大后牌面过多
+
+const pool = ref([]) // 本局参与配对的汉字子集
 const deck = ref([])
 const flipped = ref([]) // 当前翻开但未配对的卡片
 const matched = ref([]) // 已配对的 pairId 列表
 const moves = ref(0)
 const locked = ref(false)
 
-const won = computed(() => matched.value.length === characters.length)
+const won = computed(() => pool.value.length > 0 && matched.value.length === pool.value.length)
 
 function buildDeck() {
-  const cards = characters.flatMap((item) => [
+  const cards = pool.value.flatMap((item) => [
     { key: `c-${item.id}`, pairId: item.id, kind: 'char', label: item.char },
     { key: `p-${item.id}`, pairId: item.id, kind: 'pinyin', label: item.pinyin },
   ])
@@ -59,6 +62,7 @@ function buildDeck() {
 }
 
 function start() {
+  pool.value = shuffle(characters).slice(0, MATCH_SIZE)
   deck.value = buildDeck()
   flipped.value = []
   matched.value = []
